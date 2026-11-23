@@ -22,7 +22,7 @@ An exclusive, mobile-first, TikTok/Instagram-inspired luxury jewellery catalogue
 
 ---
 
-### 🔐 Manager's Portal (PIN: `1958`)
+### 🔐 Manager's Portal
 Access the manager portal by **tapping/clicking on the store logo** at the top of the catalogue.
 
 1. **➕ Add Product**:
