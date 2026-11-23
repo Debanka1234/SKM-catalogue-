@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Manna Jewellery Works | Exclusive Fine Jewellery Catalogue</title>
+  
+  <!-- Google Fonts for Luxury Aesthetic & High-Clarity Bengali Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Hind+Siliguri:wght@400;500;600;700&family=Noto+Serif+Bengali:wght@500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- JSZip for 1-click GitHub Pages ZIP bundling -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="app-container">
+    
+    <!-- Top Sticky Header in Royal Maroon -->
+    <header class="store-header">
+      <div class="header-top">
+        <!-- Store Brand (Admin trigger removed; manager portal accessible only via bottom dock) -->
+        <div class="logo-wrapper">
+          <img src="logo.jpg" alt="Manna Jewellery Works Logo" class="store-logo-img" id="headerStoreLogo" onerror="this.src='https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=120&q=80'">
+          <div class="store-brand">
+            <h1 class="store-title" id="headerStoreName">Manna Jewellery Works</h1>
+            <div class="store-tagline-row">
+              <span class="store-tagline">মান্না জুয়েলারি ওয়ার্কস &bull; Estd. 1958</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Header Call Button: Direct phone dialer redirect -->
+        <div class="header-actions">
+          <a href="tel:+919874126698" class="header-call-btn" title="Call Store: +91 98741 26698">
+            <span class="call-icon">📞</span>
+            <div class="call-text-box">
+              <span class="call-title">Call Store</span>
+              <span class="call-num">+91 98741 26698</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- 1. MAIN HOME PAGE VIEW (Step-by-Step Progressive Reveal, No Pre-selection) -->
+    <div id="homePageView" class="page-view-active">
+      
+      <!-- STEP 1: CHOOSE METAL (Both unselected initially) -->
+      <section class="wizard-card-container" id="wizardStep1Container">
+        <div class="wizard-eyebrow">STEP 1 &bull; CHOOSE METAL</div>
+        <h2 class="wizard-title">Explore Our Fine Collections</h2>
+
+        <div class="wizard-metal-grid">
+          <!-- Gold Card (Unselected on load) -->
+          <div class="wizard-metal-card" id="wizardCardGold" onclick="selectMetal('GOLD')">
+            <span class="wizard-check-badge" id="wizardCheckGold" style="display:none;">✓</span>
+            <div class="wizard-squircle-icon">✨</div>
+            <h3 class="wizard-card-title">Gold Jewellery</h3>
+            <p class="wizard-card-sub">22K / 18K Hallmarked</p>
+            <span class="wizard-count-pill" id="wizardCountGold">6 Designs</span>
+          </div>
+
+          <!-- Silver Card (Unselected on load) -->
+          <div class="wizard-metal-card" id="wizardCardSilver" onclick="selectMetal('SILVER')">
+            <span class="wizard-check-badge" id="wizardCheckSilver" style="display:none;">✓</span>
+            <div class="wizard-squircle-icon">🌙</div>
+            <h3 class="wizard-card-title">Silver Jewellery</h3>
+            <p class="wizard-card-sub">925 Sterling &amp; Pure Silver</p>
+            <span class="wizard-count-pill" id="wizardCountSilver">6 Designs</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- STEP 2: CHOOSE CATEGORY (Hidden until Step 1 selected) -->
+      <section class="wizard-card-container" id="wizardStep2Container" style="display:none;">
+        <div class="wizard-step-header-row">
+          <div class="wizard-eyebrow" id="wizardStep2Eyebrow">STEP 2 &bull; CHOOSE CATEGORY</div>
+          <button class="step-back-pill" onclick="resetWizardAndReturnHome()">
+            <span>&larr;</span> Change Metal
+          </button>
+        </div>
+        <h2 class="wizard-title" id="wizardStep2Title">Select Category</h2>
+
+        <!-- Step 2 Category Grid -->
+        <div class="wizard-category-grid" id="wizardCategoryGrid">
+          <!-- Populated dynamically by app.js (For Men, Women, Puja Items, Misc, All) -->
+        </div>
+      </section>
+
+      <!-- STEP 3: CHOOSE DESIGN TYPE (Hidden until Step 2 selected) -->
+      <section class="wizard-card-container" id="wizardStep3Container" style="display:none;">
+        <div class="wizard-step-header-row">
+          <div class="wizard-eyebrow">STEP 3 &bull; CHOOSE DESIGN TYPE</div>
+          <button class="step-back-pill" onclick="goBackToStep2()">
+            <span>&larr;</span> Change Category
+          </button>
+        </div>
+        <h2 class="wizard-title" id="wizardStep3Title">Select Design Type</h2>
+        <p class="wizard-step-subtitle">Showing all available design types:</p>
+
+        <!-- Step 3 Chips Row (Showing all available design types) -->
+        <div class="wizard-chips-row" id="wizardChipsRow">
+          <!-- Populated dynamically by app.js -->
+        </div>
+
+        <!-- Big Prominent CTA to Reveal Matching Collection -->
+        <button class="wizard-show-collection-btn" id="showCollectionBtn" onclick="revealCollections()">
+          <span>✨ View Matching Collection</span>
+          <span class="btn-count-pill" id="showCollectionCountPill">0 Pieces</span>
+        </button>
+      </section>
+
+      <!-- STEP 4: CHOOSE SPECIFIC STYLE (Dynamically revealed if sub-category has sub-types like Rani Haar, Jhumka, etc.) -->
+      <section class="wizard-card-container" id="wizardStep4Container" style="display:none;">
+        <div class="wizard-step-header-row">
+          <div class="wizard-eyebrow">STEP 4 &bull; SPECIFIC STYLE</div>
+          <button class="step-back-pill" onclick="goBackToStep3()">
+            <span>&larr;</span> Change Type
+          </button>
+        </div>
+        <h2 class="wizard-title" id="wizardStep4Title">Select Specific Style</h2>
+        <p class="wizard-step-subtitle">Choose a specific design style or view all:</p>
+
+        <!-- Step 4 Chips Row -->
+        <div class="wizard-chips-row" id="wizardStep4ChipsRow">
+          <!-- Populated dynamically by app.js -->
+        </div>
+
+        <button class="wizard-show-collection-btn" id="showCollectionBtnStep4" onclick="revealCollections()">
+          <span>✨ View Matching Collection</span>
+          <span class="btn-count-pill" id="showCollectionCountPillStep4">0 Pieces</span>
+        </button>
+      </section>
+
+      <!-- AVAILABLE COLLECTIONS SECTION (Only revealed AFTER user makes their selection) -->
+      <section class="collection-results-section" id="collectionResultsSection" style="display:none;">
+        <div class="collection-results-header">
+          <button class="change-selection-btn" onclick="hideCollections()">
+            <span>&larr;</span> Back to Options / পছন্দ পরিবর্তন
+          </button>
+          <span class="collection-filter-badge" id="collectionFilterBadge">Collection Results</span>
+        </div>
+
+        <!-- FILTERED PRODUCTS FEED (Strictly 1 item per row) -->
+        <main class="catalog-content filtered-feed-container" id="catalogContent">
+          <!-- Populated dynamically by app.js or empty state card if no products -->
+        </main>
+      </section>
+
+      <!-- STORE LOCATION & CONTACT FOOTER (At the bottom of the page) -->
+      <footer class="store-footer-card" id="storeFooterSection">
+        <div class="footer-badge">Showroom &amp; Workshop</div>
+        <h3 class="footer-store-name">Manna Jewellery Works</h3>
+        <p class="footer-store-sub">মান্না জুয়েলারি ওয়ার্কস &bull; Estd. 1958</p>
+
+        <div class="footer-address-card">
+          <div class="footer-address-line address-en">
+            <span><strong>Address:</strong> Bagnan station road north, near cosmo bazar, howrah, west Bengal, PIN- 711303</span>
+          </div>
+          <div class="footer-address-line address-bn">
+            <span><strong>ঠিকানা:</strong> বাগনান স্টেশন রোড নর্থ, কসমো বাজারের কাছে, হাওড়া, পশ্চিমবঙ্গ - ৭১১৩০৩</span>
+          </div>
+        </div>
+
+        <div class="footer-action-buttons">
+          <a href="tel:+919874126698" class="footer-btn footer-btn-call">
+            <span class="btn-icon">📞</span>
+            <div class="btn-text">
+              <span class="btn-lbl">Call Us</span>
+              <span class="btn-val">+91 98741 26698</span>
+            </div>
+          </a>
+          <a href="https://wa.me/919874126698?text=Hello%20Manna%20Jewellery%20Works,%20I%20have%20an%20inquiry." target="_blank" class="footer-btn footer-btn-wa">
+            <span class="btn-icon">💬</span>
+            <div class="btn-text">
+              <span class="btn-lbl">WhatsApp</span>
+              <span class="btn-val">Chat with Us</span>
+            </div>
+          </a>
+        </div>
+
+        <div class="footer-timing-badge">
+          <span>🕒 Showroom Hours: 10:30 AM &ndash; 8:30 PM (Daily) | Wed: 10:30 AM &ndash; 2:00 PM</span>
+        </div>
+        
+        <div class="footer-copyright">
+          &copy; 2026 Manna Jewellery Works &bull; Trusted Since 1958 &bull; 100% Hallmarked Jewellery
+        </div>
+      </footer>
+
+    </div> <!-- End Home Page View -->
+
+    <!-- 2. DEDICATED SEARCH PAGE VIEW (Only search bar until searched) -->
+    <div id="searchPageView" style="display:none;">
+      <div class="search-page-container">
+        <div class="search-page-header">
+          <button class="back-to-catalogue-btn" onclick="switchMainView('home')">&larr; Back to Home</button>
+          <h2 class="search-page-title">Search Collection</h2>
+          <p class="search-page-sub">Find any jewellery piece by name, metal, or item code</p>
+        </div>
+
+        <div class="search-page-input-wrapper">
+          <span class="search-page-icon">🔍</span>
+          <input type="text" id="dedicatedSearchInput" class="search-page-input" placeholder="Search (e.g. Rani Haar, Jhumka, Kada, MJW-GLD-101)..." oninput="onDedicatedSearchInput(this.value)">
+          <button class="search-page-clear-btn" onclick="clearDedicatedSearch()">&times;</button>
+        </div>
+
+        <!-- Initial empty state: NO products shown until searched -->
+        <div class="search-prompt-state" id="searchPromptState">
+          <div class="search-prompt-icon">✨</div>
+          <h3>Type to Search</h3>
+          <p>Matching pieces will instantly appear here as you type.</p>
+        </div>
+
+        <!-- Results Grid: Only appears when something is searched -->
+        <div class="grid-container" id="searchResultsGrid" style="display:none;"></div>
+      </div>
+    </div> <!-- End Dedicated Search Page View -->
+
+    <!-- Bottom Floating Dock (Catalogue section REMOVED from bottom bar as requested) -->
+    <nav class="bottom-nav-dock">
+      <button class="dock-btn active" id="dockBtnHome" onclick="switchMainView('home')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        <span>Home</span>
+      </button>
+      <button class="dock-btn" id="dockBtnSearch" onclick="switchMainView('search')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <span>Search</span>
+      </button>
+      <button class="dock-btn" id="dockBtnAdmin" onclick="triggerManagerLogin()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+        <span>Admin</span>
+      </button>
+    </nav>
+
+    <!-- Floating Direct WhatsApp Contact Button -->
+    <div class="whatsapp-float-btn" onclick="inquireOnWhatsApp(products[0]?.id || '')" title="Chat on WhatsApp">
+      💬
+    </div>
+
+  </div> <!-- End App Container -->
+
+  <!-- PRODUCT DETAIL MODAL SHEET WITH SWIPE MECHANISM -->
+  <div class="modal-backdrop" id="detailModalBackdrop" onclick="closeProductDetailModal()">
+    <div class="detail-modal" id="productDetailModal" onclick="event.stopPropagation()">
+      <!-- Populated dynamically with swipe carousel, details, like button, WhatsApp & Call buttons by app.js -->
+    </div>
+  </div>
+
+  <!-- MANAGER PIN AUTHENTICATION MODAL (Default PIN: 1958) -->
+  <div class="modal-backdrop" id="pinModalBackdrop" onclick="closePinModal()">
+    <div class="manager-pin-card" id="managerPinCard" onclick="event.stopPropagation()">
+      <div style="font-size:2.2rem; margin-bottom:6px;">🔐</div>
+      <h3 style="font-family:var(--font-serif); color:var(--maroon-primary); font-size:1.25rem;">Manager Portal</h3>
+      <p style="font-size:0.82rem; color:var(--text-muted); margin-top:4px;">
+        Enter 4-digit Security PIN
+      </p>
+
+      <div class="pin-display">
+        <div class="pin-digit-box" id="pin-box-0"></div>
+        <div class="pin-digit-box" id="pin-box-1"></div>
+        <div class="pin-digit-box" id="pin-box-2"></div>
+        <div class="pin-digit-box" id="pin-box-3"></div>
+      </div>
+
+      <div class="pin-keypad">
+        <button class="key-btn" onclick="pressKey('1')">1</button>
+        <button class="key-btn" onclick="pressKey('2')">2</button>
+        <button class="key-btn" onclick="pressKey('3')">3</button>
+        <button class="key-btn" onclick="pressKey('4')">4</button>
+        <button class="key-btn" onclick="pressKey('5')">5</button>
+        <button class="key-btn" onclick="pressKey('6')">6</button>
+        <button class="key-btn" onclick="pressKey('7')">7</button>
+        <button class="key-btn" onclick="pressKey('8')">8</button>
+        <button class="key-btn" onclick="pressKey('9')">9</button>
+        <button class="key-btn" style="color:var(--text-dim);" onclick="closePinModal()">Cancel</button>
+        <button class="key-btn" onclick="pressKey('0')">0</button>
+        <button class="key-btn" style="color:var(--accent-red);" onclick="deleteKey()">⌫</button>
+      </div>
+
+      <small style="display:block; margin-top:14px; font-size:0.7rem; color:var(--text-dim);">
+        Manna Jewellery Works &bull; Estd. 1958
+      </small>
+    </div>
+  </div>
+
+  <!-- FULL MANAGER PORTAL DASHBOARD -->
+  <div class="portal-backdrop" id="managerPortalBackdrop">
+    <div class="portal-window">
+      <!-- Topbar -->
+      <div class="portal-topbar">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <img src="logo.jpg" id="portalLogoIcon" style="width:34px; height:34px; border-radius:50%; object-fit:cover; border:1px solid var(--gold-bright);">
+          <div>
+            <h2 style="font-family:var(--font-serif); font-size:1.1rem; color:var(--text-on-maroon);">Manager's Portal</h2>
+            <small style="font-size:0.72rem; color:var(--gold-bright);">Manna Jewellery Works Management</small>
+          </div>
+        </div>
+        <button class="portal-close-btn" onclick="closeManagerPortal()" title="Close Portal">
+          <span class="portal-close-icon">&times;</span>
+          <span class="portal-close-label">Close</span>
+        </button>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <div class="portal-tabs">
+        <button class="portal-tab-btn active" data-tab="addProduct" onclick="switchPortalTab('addProduct')">
+          <span>➕</span> Add Product
+        </button>
+        <button class="portal-tab-btn" data-tab="metals" onclick="switchPortalTab('metals')">
+          <span>⚖️</span> Metals
+        </button>
+        <button class="portal-tab-btn" data-tab="categories" onclick="switchPortalTab('categories')">
+          <span>🌳</span> Categories
+        </button>
+        <button class="portal-tab-btn" data-tab="products" onclick="switchPortalTab('products')">
+          <span>📦</span> Products
+        </button>
+        <button class="portal-tab-btn" data-tab="insights" onclick="switchPortalTab('insights')">
+          <span>📊</span> Insights
+        </button>
+        <button class="portal-tab-btn" data-tab="others" onclick="switchPortalTab('others')">
+          <span>⚙️</span> Others
+        </button>
+      </div>
+
+      <!-- Body Area -->
+      <div class="portal-body" id="portalBody">
+        <!-- Injected dynamically by switchPortalTab -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Core Scripts -->
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
